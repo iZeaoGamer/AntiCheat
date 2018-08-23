@@ -10,6 +10,7 @@
 
 namespace AntiCheat;
 
+use AntiCheat\Task\CheckPlayerTask;
 use pocketmine\entity\Effect;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
@@ -35,6 +36,7 @@ class Main extends PluginBase implements Listener
 	{
 		$this->getServer()->getPluginManager()->registerEvents($this, $this);
 		$this->banapi = $this->getServer()->getPluginManager()->getPlugin("BanAPI");
+		$this->getScheduler()->scheduleRepeatingTask(new CheckPlayerTask($this), 20);
 	}
 
 	public function onToggleFlight(PlayerToggleFlightEvent $event): void
@@ -42,19 +44,20 @@ class Main extends PluginBase implements Listener
 		$player = $event->getPlayer();
 		if (!$player->isOp()) {
 			if ($event->isFlying()) {
-				$this->banapi->addBan($player, "Flying(飛行)", "AntiCheat", true);
+				$this->banapi->addBan($player->getName(), "Flying(飛行)", "AntiCheat", true);
 			} else {
-				$this->banapi->addBan($player, "Flying(飛行)", "AntiCheat", true);
+				$this->banapi->addBan($player->getName(), "Flying(飛行)", "AntiCheat", true);
 			}
 		}
 	}
 
+	/*
 	public function onInteract(PlayerInteractEvent $event)
 	{
 		if ($event->getAction() === PlayerInteractEvent::LEFT_CLICK_BLOCK) {
 			$this->breakcooldown[$event->getPlayer()->getRawUniqueId()] = floor(microtime(true) * 20);
 		}
-	}
+	} */
 
 	/* public function onBreak(BlockBreakEvent $event)
 	{
@@ -83,21 +86,22 @@ class Main extends PluginBase implements Listener
 		}
 	} */
 
-	public function onPlayerQuit(PlayerQuitEvent $event)
+	/*public function onPlayerQuit(PlayerQuitEvent $event)
 	{
 		unset($this->breakcooldown[$event->getPlayer()->getRawUniqueId()]);
 	}
+	*/
 
 	public function onReceive(DataPacketReceiveEvent $event)
 	{
 		$packet = $event->getPacket();
 		if ($packet instanceof LoginPacket) {
 			if ($packet->serverAddress === "mcpeproxy.tk" or $packet->serverAddress === "165.227.79.111") {
-				$this->banapi->addBan($event->getPlayer(), "PROXY(プロキシ)", "AntiCheat", true);
+				$this->banapi->addBan($packet->username, "PROXY(プロキシ)", "AntiCheat", true);
 			}
 			if ($packet->clientId === 0) {
 				$player = $event->getPlayer();
-				$this->banapi->addBan($player, "Toolbox(ツール)", "AntiCheat", true);
+				$this->banapi->addBan($packet->username, "Toolbox(ツール)", "AntiCheat", true);
 			}
 		}
 	}
