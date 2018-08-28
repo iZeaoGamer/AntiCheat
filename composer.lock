@@ -197,11 +197,11 @@
         },
         {
             "name": "pocketmine/binaryutils",
-            "version": "0.1.0",
+            "version": "0.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pmmp/BinaryUtils",
-                "reference": "c824ac67eeeb6899c2a9ec91a769eb9ed6e3f595"
+                "reference": "54efeb978be0ff9335022729fe63c1e2077bf1be"
             },
             "require": {
                 "php": ">=7.2",
@@ -217,7 +217,7 @@
                 "LGPL-3.0"
             ],
             "description": "Classes and methods for conveniently handling binary data",
-            "time": "2018-04-16T09:05:08+00:00"
+            "time": "2018-08-26T18:11:05+00:00"
         },
         {
             "name": "pocketmine/math",
