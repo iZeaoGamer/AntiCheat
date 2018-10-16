@@ -1,4 +1,4 @@
 name: AntiCheat
 main: AntiCheat\Main
-api: 4.0.0
+api: [4.0.0, 3.3.0]
 version: 1.0.0
