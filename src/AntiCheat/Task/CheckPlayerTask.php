@@ -26,7 +26,7 @@ class CheckPlayerTask extends PluginTask
     public function onRun(int $currentTick)
     {
         foreach ($this->plugin->getServer()->getOnlinePlayers() as $player) {
-            if ($player->isOp()) return;
+            if ($player->isOp() || $player->hasPermission("pmessentials.fly") return;
             if (!$player->isFlying()) return;
            $player->close("", "Flight");
         }
