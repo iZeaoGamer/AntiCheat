@@ -15,18 +15,20 @@ class CheckPlayerTask extends PluginTask
 {
     protected $banapi;
 
+    public $plugin;
+    
     public function __construct(Main $plugin)
+        $this->plugin = $plugin;
     {
-        parent::__construct($plugin);
         $this->banapi = $this->owner->getServer()->getPluginManager()->getPlugin("BanAPI");
     }
 
     public function onRun(int $currentTick)
     {
-        foreach ($this->owner->getServer()->getOnlinePlayers() as $player) {
+        foreach ($this->plugin->getServer()->getOnlinePlayers() as $player) {
             if ($player->isOp()) return;
             if (!$player->isFlying()) return;
-            $this->banapi->addBan($player->getName(), "Flying(飛行)", "AntiCheat", true);
+           $player->close("", "Flight");
         }
     }
 }
