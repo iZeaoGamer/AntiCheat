@@ -35,11 +35,11 @@ class Main extends PluginBase implements Listener
     public function onToggleFlight(PlayerToggleFlightEvent $event): void
     {
         $player = $event->getPlayer();
-        if (!$player->isOp()) {
+        if (!$player->isOp() || !$player->hasPermission("pmessentials.fly")) {
             if ($event->isFlying()) {
-                $this->banapi->addBan($player->getName(), $player->getAddress(), "Flying(飛行)", "AntiCheat", true);
+                $this->banapi->addBan($player->getName(), $player->getAddress(), "Flying(flight)", "AntiCheat", true);
             } else {
-                $this->banapi->addBan($player->getName(), $player->getAddress(), "Flying(飛行)", "AntiCheat", true);
+                $this->banapi->addBan($player->getName(), $player->getAddress(), "Flying(flight)", "AntiCheat", true);
             }
         }
     }
@@ -49,10 +49,10 @@ class Main extends PluginBase implements Listener
         $packet = $event->getPacket();
         if ($packet instanceof LoginPacket) {
             if ($packet->serverAddress === "mcpeproxy.tk" or $packet->serverAddress === "165.227.79.111") {
-                $this->banapi->addBan($packet->username, $packet->serverAddress, "PROXY(プロキシ)", "AntiCheat", true);
+                $this->banapi->addBan($packet->username, $packet->serverAddress, "PROXY", "AntiCheat", true);
             }
             if ($packet->clientId === 0) {
-                $this->banapi->addBan($packet->username, $packet->serverAddress, "Toolbox(ツール)", "AntiCheat", true);
+                $this->banapi->addBan($packet->username, $packet->serverAddress, "Toolbox", "AntiCheat", true);
             }
         }
     }
@@ -79,7 +79,7 @@ class Main extends PluginBase implements Listener
                 if ($damager->getGamemode() === Player::CREATIVE or $damager->getInventory()->getItemInHand()->getId() === Item::BOW) {
                     return;
                 }
-                if ($damager->distance($entity) > 3.9) {
+                if ($damager->distance($entity) > 4.0) {
                     $event->setCancelled(true);
                 }
             }
