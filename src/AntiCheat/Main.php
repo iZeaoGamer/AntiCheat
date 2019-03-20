@@ -19,6 +19,7 @@ use pocketmine\item\Item;
 use pocketmine\network\mcpe\protocol\LoginPacket;
 use pocketmine\Player;
 use pocketmine\plugin\PluginBase;
+use pocketmine\Server;
 
 class Main extends PluginBase implements Listener
 {
@@ -37,9 +38,13 @@ class Main extends PluginBase implements Listener
         $player = $event->getPlayer();
         if (!$player->isOp() || !$player->hasPermission("pmessentials.fly")) {
             if ($event->isFlying()) {
-                $this->banapi->addBan($player->getName(), $player->getAddress(), "Flying(flight)", "AntiCheat", true);
+                foreach(Server::getInstance()->getOnlinePlayers() as $staff){
+                    if($staff->hasPermission("anticheat.notify")){
+                        $staff->sendMessage(TextFormat::colorize("&7[&cAnti&4Cheat&7] &3" . $player->getName() . " &bis suspected of using fly hacks.");
             } else {
-                $this->banapi->addBan($player->getName(), $player->getAddress(), "Flying(flight)", "AntiCheat", true);
+                foreach(Server::getInstance()->getOnlinePlayers() as $staff){
+                    if($staff->hasPermission("anticheat.notify")){
+                        $staff->sendMessage(TextFormat::colorize("&7[&cAnti&4Cheat&7] &3" . $player->getName() . " &bis suspected of using fly hacks.");
             }
         }
     }
@@ -47,12 +52,13 @@ class Main extends PluginBase implements Listener
     public function onReceive(DataPacketReceiveEvent $event)
     {
         $packet = $event->getPacket();
+        $player = $event->getPlayer();
         if ($packet instanceof LoginPacket) {
             if ($packet->serverAddress === "mcpeproxy.tk" or $packet->serverAddress === "165.227.79.111") {
-                $this->banapi->addBan($packet->username, $packet->serverAddress, "PROXY", "AntiCheat", true);
+                $player->close("", "Proxy server");
             }
             if ($packet->clientId === 0) {
-                $this->banapi->addBan($packet->username, $packet->serverAddress, "Toolbox", "AntiCheat", true);
+                $player->close("", "Disable toolbox.");
             }
         }
     }
