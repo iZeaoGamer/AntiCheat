@@ -40,11 +40,11 @@ class Main extends PluginBase implements Listener
             if ($event->isFlying()) {
                 foreach(Server::getInstance()->getOnlinePlayers() as $staff){
                     if($staff->hasPermission("anticheat.notify")){
-                        $staff->sendMessage(TextFormat::colorize("&7[&cAnti&4Cheat&7] &3" . $player->getName() . " &bis suspected of using fly hacks.");
+                        $staff->sendMessage(TextFormat::colorize("&7[&cAnti&4Cheat&7] &3" . $player->getName() . " &bis suspected of using fly hacks."));
             } else {
                 foreach(Server::getInstance()->getOnlinePlayers() as $staff){
                     if($staff->hasPermission("anticheat.notify")){
-                        $staff->sendMessage(TextFormat::colorize("&7[&cAnti&4Cheat&7] &3" . $player->getName() . " &bis suspected of using fly hacks.");
+                        $staff->sendMessage(TextFormat::colorize("&7[&cAnti&4Cheat&7] &3" . $player->getName() . " &bis suspected of using fly hacks."));
             }
         }
     }
@@ -56,9 +56,16 @@ class Main extends PluginBase implements Listener
         if ($packet instanceof LoginPacket) {
             if ($packet->serverAddress === "mcpeproxy.tk" or $packet->serverAddress === "165.227.79.111") {
                 $player->close("", "Proxy server");
+                foreach(Server::getInstance()->getOnlinePlayers() as $staff){
+                    if($staff->hasPermission("anticheat.notify")){
+                        $staff->sendMessage(TextFormat::colorize("&7[&cAnti&4Cheat&7] &3" . $player->getName() . " &btried to join using mcpeproxy"));
             }
             if ($packet->clientId === 0) {
                 $player->close("", "Disable toolbox.");
+                foreach(Server::getInstance()->getOnlinePlayers() as $staff){
+                    if($staff->hasPermission("anticheat.notify")){
+                        $staff->sendMessage(TextFormat::colorize("&7[&cAnti&4Cheat&7] &3" . $player->getName() . " &btried to use Toolbox."));
+            }
             }
         }
     }
