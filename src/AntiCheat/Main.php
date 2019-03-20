@@ -63,7 +63,7 @@ class Main extends PluginBase implements Listener
         $cooldown = microtime(true);
         if (isset($this->spamplayers[$player->getName()])) {
             if (($cooldown - $this->spamplayers[$player->getName()]['cooldown']) < 2) {
-                $player->sendMessage("§7クールダウン中です。");
+                $player->sendMessage("This command is in cooldown. Please wait at least 2 seconds to use commands.");
                 $event->setCancelled(true);
             }
         }
